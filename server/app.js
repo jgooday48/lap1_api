@@ -2,11 +2,10 @@ const express = require('express')
 const cors = require('cors')
 const fruits = require('./fruits.json')
 const logger = require('./logger')
-const { fstatSync } = require('fs')
+const fs  = require('fs')
 
 const app = express()
 
-// MIDDLEWARE
 
 app.use(cors())
 app.use(express.json())
@@ -61,7 +60,7 @@ app.patch('/fruits/:id', async (req,res) => {
     res.status(404).send({ error: `cannot update missing fruit` });
   }
 
- else if(req.body.name===undefined) {
+ else if (req.body.name===undefined) {
     res.status(422).send({ error: 'You need to specify the name' })
   }
  else{
@@ -78,8 +77,9 @@ app.delete('/fruits/:id', (req,res) => {
   if (!idx) {
     res.status(404).send('doesnt exist')
   }
-
-  res.status(204).send('delete route')
+else {
+  fruit.delete
+  res.status(204).send('delete route')}
 
 
 })
