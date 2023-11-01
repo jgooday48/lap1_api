@@ -48,7 +48,7 @@ app.post('/fruits', (req,res) => {
     }
 
     fruits.push(fruit)
-    res.status(201).send({"name": fruits.name, "id": fruits.id})
+    res.status(201).send({"name": fruit.name, "id": fruit.id})
 } )
 
 app.patch('/fruits/:id', async (req,res) => {
