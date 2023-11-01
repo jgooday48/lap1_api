@@ -2,6 +2,7 @@ const express = require('express')
 const cors = require('cors')
 const fruits = require('./fruits.json')
 const logger = require('./logger')
+const { fstatSync } = require('fs')
 
 const app = express()
 
@@ -12,7 +13,7 @@ app.use(express.json())
 app.use(logger)
 
 app.get('/', (req, res) => {
-  res.status(200).send('Hello Reddy!')
+  res.status(200).send('Are you reddy!')
 })
 
 
@@ -28,7 +29,7 @@ app.get('/fruits/:id', (req, res) => {
     const fruit = fruits[idx]
 
     if (!fruit) {
-        res.status(404).send({ error: "fruit not found" })
+        res.status(404).send({ error: `Fruit with id ${idx +1} not found` })
     }
     else {
         res.status(200).send(fruit)
@@ -43,19 +44,44 @@ app.post('/fruits', (req,res) => {
     fruit.id = lastId
 
     if (fruit.name===undefined){
-        res.status()
+        res.status(422).send('you need a name to create a fruit')
     }
 
     fruits.push(fruit)
-    res.status(201).send('it works')
+    res.status(201).send({"name": fruits.name, "id": fruits.id})
 } )
 
-app.patch('/fruits/:id', (req,res) => {
-    
+app.patch('/fruits/:id', async (req,res) => {
+  const id = parseInt(req.params.id, 10); // Parse the ID from the URL params
+
+  const existingFruit = fruits.find((fruit) => fruit.id === id);
+
+  if (!existingFruit) {
+    // If the fruit with the specified ID doesn't exist, return a 404 response.
+    res.status(404).send({ error: `cannot update missing fruit` });
+  }
+
+ else if(req.body.name===undefined) {
+    res.status(422).send({ error: 'You need to specify the name' })
+  }
+ else{
+  existingFruit.name = req.body.name; 
+
+  res.status(200).json(existingFruit); }
 })
 
 app.delete('/fruits/:id', (req,res) => {
-    
+  console.log(req.params)
+  const idx = req.params.id - 1
+
+  const fruit = fruits[idx]
+  if (!idx) {
+    res.status(404).send('doesnt exist')
+  }
+
+  res.status(204).send('delete route')
+
+
 })
 
 module.exports = app
