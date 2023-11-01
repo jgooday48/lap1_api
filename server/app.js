@@ -51,12 +51,11 @@ app.post('/fruits', (req,res) => {
 } )
 
 app.patch('/fruits/:id', async (req,res) => {
-  const id = parseInt(req.params.id, 10); // Parse the ID from the URL params
+  const id = parseInt(req.params.id, 10); 
 
   const existingFruit = fruits.find((fruit) => fruit.id === id);
 
   if (!existingFruit) {
-    // If the fruit with the specified ID doesn't exist, return a 404 response.
     res.status(404).send({ error: `cannot update missing fruit` });
   }
 
