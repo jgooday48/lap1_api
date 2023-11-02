@@ -75,7 +75,7 @@ app.delete('/fruits/:id', (req,res) => {
   const deletedFruitIndex = fruits.findIndex((fruit) => fruit.id === id);
 
   if (deletedFruitIndex === -1) { //throws if user selected fruit not in the file
-    return res.status(404).send({ error: `Fruit with id ${id} not found` });
+    res.status(404).send({ error: `Fruit with id ${id} not found` });
   }
 
   fruits.splice(deletedFruitIndex, 1); // deletes fruit requested via index
